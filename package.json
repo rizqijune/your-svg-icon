@@ -1,4 +1,27 @@
 {
   "name": "your-svg-icon",
-  "packageManager": "yarn@4.5.1"
+  "version": "0.1.0",
+  "description": "Add your own custom SVG icon! Plugin for Tailwind CSS.",
+  "main": "index.js",
+  "keywords": [
+    "svg",
+    "icons",
+    "tailwindcss"
+  ],
+  "author": "rizqijune",
+  "license": "MIT",
+  "files": [
+    "dist/",
+    "src/icons/"
+  ],
+  "scripts": {
+    "build": "postcss src/styles.css -o dist/styles.css"
+  },
+  "packageManager": "yarn@4.5.1",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.14"
+  }
 }
