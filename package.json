@@ -12,7 +12,7 @@
   "license": "MIT",
   "files": [
     "dist/",
-    "src/icons/"
+    "src/"
   ],
   "scripts": {
     "build": "postcss src/styles.css -o dist/styles.css"
