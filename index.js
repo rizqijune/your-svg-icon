@@ -1,27 +1,31 @@
+const plugin = require('tailwindcss/plugin');
 const fs = require('fs');
 const path = require('path');
 
-module.exports = function iconPlugin({ addUtilities }, options = {}) {
-  const iconsDir = options.iconsDir || path.resolve(process.cwd(), 'src/icons'); // Adjust this to your icons directory
+const iconPlugin = (options = {}) => {
+  return plugin(function ({ addUtilities }) {
+    const iconsDir = options.iconsDir || path.resolve(process.cwd(), 'src/icons'); // Default to src/icons
 
-  if (!fs.existsSync(iconsDir)) {
-    console.warn(`Warning: Icons directory ${iconsDir} does not exist.`);
-    return;
-  }
+    if (!fs.existsSync(iconsDir)) {
+      console.warn(`Warning: Icons directory ${iconsDir} does not exist.`);
+      return;
+    }
 
-  const svgFiles = fs.readdirSync(iconsDir).filter(file => file.endsWith('.svg'));
+    const svgFiles = fs.readdirSync(iconsDir).filter(file => file.endsWith('.svg'));
+    const iconUtilities = {};
 
-  const iconUtilities = {};
+    svgFiles.forEach(file => {
+      const iconName = path.basename(file, '.svg');
+      iconUtilities[`.icon-${iconName}`] = { // Use dot notation for class names
+        backgroundImage: `url('${path.join(iconsDir, file)}')`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        display: 'inline-block',
+      };
+    });
 
-  svgFiles.forEach(file => {
-    const iconName = path.basename(file, '.svg');
-    iconUtilities[`.icon-${iconName}`] = {
-      backgroundImage: `url('${path.join(iconsDir, file)}')`,  // Point to the SVG files
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      display: 'inline-block',
-    };
+    addUtilities(iconUtilities, ['responsive', 'hover']); // Adding the utilities
   });
-
-  addUtilities(iconUtilities, ['responsive', 'hover']);
 };
+
+module.exports = iconPlugin;
